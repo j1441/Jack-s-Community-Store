@@ -1,14 +1,16 @@
 version: "3.7"
 
 services:
-
   app_proxy:
     environment:
-      # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: jacks-mining-dashboard-app_web_1
-      APP_PORT: 3000
-    
-  server:
-    image: j1441/mining-dashboard-app:latest
-    user: "1000:1000"
-    init: true
+      APP_HOST: jacks-mining-dashboard_app_1
+      APP_PORT: 3456
+
+  app:
+    image: j73642/mining-dashboard-app:1.0.0@sha256:45ec3beef7625dcd8929cff9a47050793ba2447389516d6b5092e7757f5f6d7d
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    environment:
+      NODE_ENV: production
