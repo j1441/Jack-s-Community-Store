@@ -8,7 +8,6 @@ services:
 
   web:
     image: j73642/mining-dashboard-app:1.0.5@sha256:63418302fbaa19f2844fb4ac0419863a154762fcb8195366e9b5f4cf5c61a872
-    network_mode: host
     restart: on-failure
     stop_grace_period: 1m
     volumes:
