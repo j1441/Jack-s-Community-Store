@@ -3,10 +3,10 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: jacks-mining-dashboard_app_1
+      APP_HOST: jacks-mining-dashboard_web_1
       APP_PORT: 3456
 
-  app:
+  web:
     image: j73642/mining-dashboard-app:1.0.4@sha256:58fd86fb68771bb90961368084c56817e1cf752ca4e4f24dff2e6e57c59d652f
     restart: on-failure
     stop_grace_period: 1m
