@@ -1,30 +1,39 @@
 manifestVersion: 1
 id: jacks-mining-dashboard
 name: Mining Dashboard
-tagline: Dashboard to control and view your home mining stats.
+tagline: Monitor & control your Antminer for home heating
 icon: https://raw.githubusercontent.com/j1441/jacks-mining-dashboard-app/e1424543a5b83fba6620658e73e4f9ec62459c03/icon.svg
 category: automation
 version: "1.0.0"
 port: 3456
 description: >-
-  Dashboard to control and view your home mining stats.
+  Real-time dashboard for Antminers running Braiins OS. Perfect for home heating miners.
 
-
-  You can also add newlines!
+  Features:
+  • Live hashrate, temperature, fan speed & power monitoring
+  • Power profiles (Low ~2000W / Medium ~3250W / High ~3500W)
+  • Pool stats & reject rate
+  • Persistent miner IP config
+  • Responsive dark UI, works with Tailscale
 
 developer: j1441
-website: https://github.com/j1441/
+website: https://github.com/j1441/jacks-mining-dashboard-app
 submitter: j1441
-submission: https://github.com/j1441/jacks-mining-app-dashboard
-repo: https://github.com/j1441/jacks-mining-app-dashboard
-support: https://github.com/j1441/jacks-mining-app-dashboard/issues
+submission: https://github.com/j1441/jacks-mining-dashboard-app
+repo: https://github.com/j1441/jacks-mining-dashboard-app
+support: hhttps://github.com/j1441/jacks-mining-dashboard-app/issues
 gallery:
   - https://i.imgur.com/yyVG0Jb.jpeg
   - https://i.imgur.com/yyVG0Jb.jpeg
   - https://i.imgur.com/yyVG0Jb.jpeg
 releaseNotes: >-
-  Add what's new in the latest version of your app here.
-dependencies: []
+  Initial release v1.0.0
+
+  • Single miner support
+  • Real-time WebSocket updates
+  • Power profile control
+  • Full temperature & fan monitoring
+  • Persistent configurationdependencies: []
 path: ""
 defaultUsername: ""
 defaultPassword: ""
