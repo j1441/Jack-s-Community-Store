@@ -1,23 +1,23 @@
 manifestVersion: 1
-id: sparkles-hello-world
-name: Hello World
-tagline: Replace this tagline with your app's tagline
-icon: https://svgur.com/i/mvA.svg
+id: jacks-mining-dashboard-app
+name: Mining Dashboard
+tagline: Dashboard to control and view your home mining stats.
+icon: https://github.com/j1441/mining-dashboard-app/blob/main/icon.svg
 category: Development
 version: "1.0.0"
-port: 4000
+port: 3456
 description: >-
-  Add your app's description here.
+  Dashboard to control and view your home mining stats.
 
 
   You can also add newlines!
 
-developer: Umbrel
-website: https://umbrel.com
-submitter: Umbrel
-submission: https://github.com/getumbrel/umbrel-hello-world-app
-repo: https://github.com/getumbrel/umbrel-hello-world-app
-support: https://github.com/getumbrel/umbrel-hello-world-app/issues
+developer: j1441
+website: https://github.com/j1441/
+submitter: j1441
+submission: https://github.com/j1441/mining-app-dashboard
+repo: https://github.com/j1441/mining-app-dashboard
+support: https://github.com/j1441/mining-app-dashboard/issues
 gallery:
   - https://i.imgur.com/yyVG0Jb.jpeg
   - https://i.imgur.com/yyVG0Jb.jpeg
