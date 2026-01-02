@@ -2,7 +2,7 @@ manifestVersion: 1
 id: jacks-aiostreams
 name: AIOStreams
 tagline: All-in-one Stremio addon aggregator
-icon: https://raw.githubusercontent.com/j1441/AIOStreams/main/packages/frontend/public/android-chrome-512x512.png
+icon: icon.svg
 category: media
 version: "1.0.0"
 port: 3009
