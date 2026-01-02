@@ -15,7 +15,7 @@ services:
       - ${APP_DATA_DIR}/data:/app/data
     environment:
       PORT: 3009
-      DATABASE_URI: file:/app/data/aiostreams.db
+      DATABASE_URI: sqlite://./data/aiostreams.db
       SECRET_KEY: ${APP_SEED}
       BASE_URL: http://${DEVICE_DOMAIN_NAME}:3009
       ADDON_NAME: AIOStreams

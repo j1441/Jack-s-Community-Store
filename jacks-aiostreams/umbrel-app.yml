@@ -2,7 +2,7 @@ manifestVersion: 1
 id: jacks-aiostreams
 name: AIOStreams
 tagline: All-in-one Stremio addon aggregator
-icon: icon.svg
+icon: https://raw.githubusercontent.com/j1441/Jack-s-Community-Store/master/jacks-aiostreams/icon.svg
 category: media
 version: "1.0.0"
 port: 3009
