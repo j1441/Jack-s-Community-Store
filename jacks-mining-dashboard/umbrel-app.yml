@@ -4,7 +4,7 @@ name: Mining Dashboard
 tagline: Monitor & control your Antminer for home heating
 icon: https://raw.githubusercontent.com/j1441/jacks-mining-dashboard-app/e1424543a5b83fba6620658e73e4f9ec62459c03/icon.svg
 category: automation
-version: "1.2.43"
+version: "1.2.44"
 port: 3456
 description: >-
   Real-time dashboard for Antminers running Braiins OS. Perfect for home heating miners.
