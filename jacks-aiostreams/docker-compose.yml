@@ -16,7 +16,8 @@ services:
     environment:
       PORT: 3009
       DATABASE_URI: file:/app/data/aiostreams.db
-      SECRET_KEY: ${APP_SEED}0000000000000000000000000000000000000000000000000000000000000000
+      SECRET_KEY: ${APP_SEED}
+      BASE_URL: http://${DEVICE_DOMAIN_NAME}:3009
       ADDON_NAME: AIOStreams
       ADDON_ID: jacks-aiostreams.umbrel
       LOG_LEVEL: info
