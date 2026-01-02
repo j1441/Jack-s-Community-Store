@@ -1,13 +1,6 @@
 version: "3.7"
 
 services:
-  app_proxy:
-    environment:
-      APP_HOST: web
-      APP_PORT: 3009
-    depends_on:
-      - web
-
   web:
     image: j73642/jacks-aiostreams:1.0.1
     restart: on-failure
