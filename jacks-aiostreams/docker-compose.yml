@@ -5,6 +5,7 @@ services:
     environment:
       APP_HOST: web
       APP_PORT: 3009
+    restart: on-failure
 
   web:
     image: j73642/jacks-aiostreams:1.0.1
