@@ -1,0 +1,47 @@
+name: Update AIOStreams Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version number (e.g., 1.0.1)'
+        required: true
+        type: string
+      digest:
+        description: 'Docker image digest (sha256:...)'
+        required: true
+        type: string
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update version files
+        run: |
+          # Update version in umbrel-app.yml
+          sed -i 's/^version: ".*"/version: "${{ inputs.version }}"/' jacks-aiostreams/umbrel-app.yml
+
+          # Update image with digest in docker-compose.yml
+          sed -i "s|image: j73642/jacks-aiostreams:.*|image: j73642/jacks-aiostreams:${{ inputs.version }}@${{ inputs.digest }}|" jacks-aiostreams/docker-compose.yml
+
+          echo "Updated jacks-aiostreams to version ${{ inputs.version }}"
+          echo ""
+          echo "umbrel-app.yml:"
+          grep "^version:" jacks-aiostreams/umbrel-app.yml
+          echo ""
+          echo "docker-compose.yml image:"
+          grep "image:" jacks-aiostreams/docker-compose.yml
+
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Update jacks-aiostreams to version ${{ inputs.version }}"
+          git push

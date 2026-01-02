@@ -1,0 +1,34 @@
+manifestVersion: 1
+id: jacks-aiostreams
+name: AIOStreams
+tagline: All-in-one Stremio addon aggregator
+icon: https://raw.githubusercontent.com/j1441/AIOStreams/main/packages/frontend/public/android-chrome-512x512.png
+category: media
+version: "1.0.0"
+port: 3009
+description: >-
+  AIOStreams is a powerful "super-addon" that consolidates multiple Stremio addons
+  and debrid services into a single, highly customizable interface.
+
+  Features:
+  - Unified stream results from 10+ built-in addons
+  - Integrated addon marketplace with auto-configuration
+  - Support for Real-Debrid, AllDebrid, Premiumize, TorBox & more
+  - Advanced filtering by quality, audio, language & custom regex
+  - Catalog customization with RPDB poster support
+  - Proxy integration (MediaFlow/StremThru)
+  - Jackett, Prowlarr & NZBHydra support
+  - Google Drive integration
+
+developer: Viren070
+website: https://github.com/Viren070/AIOStreams
+submitter: j1441
+submission: https://github.com/j1441/AIOStreams
+repo: https://github.com/j1441/AIOStreams
+support: https://github.com/Viren070/AIOStreams/issues
+gallery: []
+releaseNotes: ""
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""

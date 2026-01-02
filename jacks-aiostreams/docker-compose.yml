@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: jacks-aiostreams_web_1
+      APP_PORT: 3009
+
+  web:
+    image: j73642/jacks-aiostreams:1.0.0
+    user: "1000:1000"
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    environment:
+      PORT: 3009
+      DATABASE_URI: file:/app/data/aiostreams.db
+      SECRET_KEY: ${APP_SEED}0000000000000000000000000000000000000000000000000000000000000000
+      ADDON_NAME: AIOStreams
+      ADDON_ID: jacks-aiostreams.umbrel
+      LOG_LEVEL: info
+      DISABLE_RATE_LIMITS: "true"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3009/api/v1/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
