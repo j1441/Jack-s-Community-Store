@@ -3,12 +3,13 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: jacks-aiostreams_web_1
+      APP_HOST: web
       APP_PORT: 3009
+    depends_on:
+      - web
 
   web:
     image: j73642/jacks-aiostreams:1.0.0@sha256:24fe7ea08bded96d2ccb5dc53bf1deeff0977291e3471f5d3aee79ff7d209eb5
-    user: "1000:1000"
     restart: on-failure
     stop_grace_period: 1m
     volumes:
