@@ -9,7 +9,7 @@ services:
       - web
 
   web:
-    image: j73642/jacks-aiostreams:1.0.0@sha256:24fe7ea08bded96d2ccb5dc53bf1deeff0977291e3471f5d3aee79ff7d209eb5
+    image: j73642/jacks-aiostreams:1.0.1@271117727b19a67d7ba11cb450esha256:42e7439127db5fb65d85caea9da53d92a33b1
     restart: on-failure
     stop_grace_period: 1m
     volumes:

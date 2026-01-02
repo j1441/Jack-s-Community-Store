@@ -4,7 +4,7 @@ name: AIOStreams
 tagline: All-in-one Stremio addon aggregator
 icon: https://raw.githubusercontent.com/j1441/Jack-s-Community-Store/master/jacks-aiostreams/icon.svg
 category: media
-version: "1.0.0"
+version: "1.0.1"
 port: 3009
 description: >-
   AIOStreams is a powerful "super-addon" that consolidates multiple Stremio addons
