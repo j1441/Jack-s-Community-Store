@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jack's AIOStreams (Umbrel)</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; line-height: 1.4; }
+      code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
+      .box { border: 1px solid #ddd; padding: 16px; border-radius: 10px; max-width: 900px; }
+    </style>
+  </head>
+  <body>
+    <h1>Jack's AIOStreams (Umbrel)</h1>
+    <div class="box">
+      <p>This Umbrel app runs AIOStreams for FilmBox. Umbrel's <code>/app/&lt;id&gt;/</code> path prefix breaks some addons, so we expose AIOStreams on a dedicated port and show the URLs here.</p>
+
+      <h3>Local (LAN)</h3>
+      <p><b>UI:</b> <code>http://umbrel.local:3010</code></p>
+      <p><b>Manifest:</b> <code>http://umbrel.local:3010/manifest.json</code></p>
+
+      <h3>For FilmBox VPS (via Tailscale)</h3>
+      <p><b>UI:</b> <code>http://&lt;UMBREL_TAILSCALE_IP&gt;:3010</code></p>
+      <p><b>Manifest:</b> <code>http://&lt;UMBREL_TAILSCALE_IP&gt;:3010/manifest.json</code></p>
+
+      <p>Next step: point <code>addon.getfilmbox.com</code> at the VPS proxy (public), and have the VPS proxy to Umbrel over Tailscale.</p>
+    </div>
+  </body>
+</html>
