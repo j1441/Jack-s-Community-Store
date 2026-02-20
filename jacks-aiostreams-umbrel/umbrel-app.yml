@@ -4,6 +4,7 @@ category: media
 name: Jack's AIOStreams
 version: "1.0.0"
 tagline: All-in-one Stremio addon aggregator
+icon: http://192.168.1.243:8085/j1212/Jack-s-Community-Store/raw/branch/master/jacks-aiostreams-umbrel/icon.svg
 description: >-
   AIOStreams is a powerful Stremio addon that aggregates multiple other addons into a single feed.
   It helps you bypass rate limits, combine multiple sources, and manage your streaming setup easily.
