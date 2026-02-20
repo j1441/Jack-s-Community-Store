@@ -1,0 +1,68 @@
+name: Update jacks-aiostreams-umbrel version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version number (e.g., 1.0.1)'
+        required: true
+        type: string
+      image:
+        description: 'Docker image (e.g., viren070/aiostreams)'
+        required: true
+        default: 'viren070/aiostreams'
+        type: string
+      tag:
+        description: 'Docker tag (e.g., latest or v1.2.3)'
+        required: true
+        default: 'latest'
+        type: string
+      digest:
+        description: 'Optional docker image digest (sha256:...) to pin exact multi-arch image. Leave blank to use tag only.'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update version + image
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_DIR="jacks-aiostreams-umbrel"
+          MANIFEST="$APP_DIR/umbrel-app.yml"
+          COMPOSE="$APP_DIR/docker-compose.yml"
+
+          echo "Updating $APP_DIR to version ${{ inputs.version }}"
+
+          # Update version in umbrel-app.yml
+          sed -i 's/^version: ".*"/version: "${{ inputs.version }}"/' "$MANIFEST"
+
+          # Update docker image line (with optional digest)
+          if [ -n "${{ inputs.digest }}" ]; then
+            sed -i "s|^\s*image: .*|    image: ${{ inputs.image }}:${{ inputs.tag }}@${{ inputs.digest }}|" "$COMPOSE"
+          else
+            sed -i "s|^\s*image: .*|    image: ${{ inputs.image }}:${{ inputs.tag }}|" "$COMPOSE"
+          fi
+
+          echo "---"
+          echo "Manifest version now:"
+          grep '^version:' "$MANIFEST" || true
+          echo "Compose image now:"
+          grep 'image:' "$COMPOSE" || true
+
+      - name: Commit and push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Update jacks-aiostreams-umbrel to version ${{ inputs.version }}"
+          git push
