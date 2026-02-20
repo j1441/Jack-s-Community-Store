@@ -1,0 +1,12 @@
+:3000 {
+  # Umbrel app requests come in as /app/jacks-aiostreams-umbrel/...
+  # Strip that prefix so AIOStreams receives /...
+  handle_path /app/jacks-aiostreams-umbrel/* {
+    reverse_proxy web:3000
+  }
+
+  # Fallback: if Umbrel ever hits / directly, still proxy to AIOStreams
+  handle {
+    reverse_proxy web:3000
+  }
+}

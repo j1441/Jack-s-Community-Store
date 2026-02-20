@@ -5,8 +5,20 @@ services:
     environment:
       # <app-id>_<web-container-name>_1
       # Note: the _1 suffix is required by Umbrel
-      APP_HOST: jacks-aiostreams-umbrel_web_1
+      APP_HOST: jacks-aiostreams-umbrel_proxy_1
       APP_PORT: 3000
+
+  # Tiny path-rewrite proxy.
+  # Umbrel forwards requests to the web container with the /app/<app-id>/ prefix intact.
+  # AIOStreams expects to be served from / (e.g. /manifest.json), so we strip the prefix.
+  proxy:
+    image: caddy:2-alpine
+    restart: on-failure
+    stop_grace_period: 10s
+    depends_on:
+      - web
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
 
   web:
     image: viren070/aiostreams:latest
@@ -14,19 +26,13 @@ services:
     stop_grace_period: 1m
     environment:
       # Required by AIOStreams
-      # Use Umbrel-provided APP_SEED (64 hex chars) as the encryption key
       - SECRET_KEY=${APP_SEED}
 
-      # Base URL must be reachable by clients that will consume the manifest.
-      # For LAN users this will typically be http://umbrel.local:3000
-      # For FilmBox server via Tailscale, use the Umbrel device's Tailscale IP.
-      # Set this in Umbrel app settings if you want something else.
-      # Umbrel serves apps at /app/<app-id>/ behind its reverse proxy
+      # IMPORTANT: this should be the *public* URL clients use (through Umbrel proxy)
       - BASE_URL=http://${DEVICE_DOMAIN_NAME}/app/jacks-aiostreams-umbrel
 
       # Optional: configure which addons AIOStreams aggregates
       - ADDON_URLS=https://torrentio.strem.fun/manifest.json
 
       # Auth: must be a comma-separated list of username:password pairs
-      # Umbrel provides APP_PASSWORD; we set user 'admin' by default.
       - AIOSTREAMS_AUTH=admin:${APP_PASSWORD}
