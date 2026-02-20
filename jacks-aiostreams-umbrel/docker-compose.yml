@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: aiostreams_web_1
+      APP_PORT: 3000
+
+  web:
+    image: viren070/aiostreams:latest
+    restart: on-failure
+    stop_grace_period: 1m
+    environment:
+      # Use Tailscale IP or 'aiostreams' if accessing via internal docker network
+      # Since getfilmbox connects via Tailscale to Umbrel, this HOST should likely be the
+      # Tailscale IP of the Umbrel device (e.g. http://100.x.y.z:3000)
+      # For now, we default to the container port, but you must set this env var in the app
+      # settings or exports if needed.
+      - HOST=http://aiostreams:3000
+      - ADDON_URLS=https://torrentio.strem.fun/manifest.json
+      # Default password - user should change this
+      - AIOSTREAMS_AUTH=filmbox_default_secret

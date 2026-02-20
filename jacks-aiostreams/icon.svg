@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="stream-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="256" height="256" fill="url(#bg-gradient)"/>
+
+  <!-- Play button circle -->
+  <circle cx="128" cy="128" r="80" fill="white" opacity="0.15"/>
+
+  <!-- Stylized "AIO" letters integrated with play symbol -->
+  <g transform="translate(128, 128)">
+    <!-- Play triangle (pointing right) -->
+    <path d="M -20 -35 L 40 0 L -20 35 Z" fill="white"/>
+
+    <!-- Stream lines (representing multiple streams) -->
+    <path d="M -65 -45 L -45 -45" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+    <path d="M -65 -30 L -35 -30" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+    <path d="M -65 -15 L -45 -15" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+
+    <path d="M -65 5 L -45 5" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+    <path d="M -65 20 L -35 20" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+    <path d="M -65 35 L -45 35" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Signal waves on the right -->
+    <path d="M 50 -25 Q 60 -15 50 -5" stroke="white" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.7"/>
+    <path d="M 50 5 Q 60 15 50 25" stroke="white" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+    <path d="M 60 -30 Q 75 -15 60 0" stroke="white" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5"/>
+    <path d="M 60 0 Q 75 15 60 30" stroke="white" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  </g>
+</svg>

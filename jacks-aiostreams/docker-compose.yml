@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: jacks-aiostreams_web_1
+      APP_PORT: 3009
+    restart: on-failure
+
+  web:
+    image: j73642/jacks-aiostreams:1.0.1
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    environment:
+      PORT: 3009
+      DATABASE_URI: sqlite://./data/aiostreams.db
+      SECRET_KEY: ${APP_SEED}
+      BASE_URL: http://${DEVICE_DOMAIN_NAME}:3009
+      ADDON_NAME: AIOStreams
+      ADDON_ID: jacks-aiostreams.umbrel
+      LOG_LEVEL: info
+      DISABLE_RATE_LIMITS: "true"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3009/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s

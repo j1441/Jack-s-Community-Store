@@ -1,0 +1,25 @@
+manifestVersion: 1
+id: jacks-aiostreams-umbrel
+category: media
+name: Jack's AIOStreams
+version: "1.0.0"
+tagline: All-in-one Stremio addon aggregator
+description: >-
+  AIOStreams is a powerful Stremio addon that aggregates multiple other addons into a single feed.
+  It helps you bypass rate limits, combine multiple sources, and manage your streaming setup easily.
+  
+  This version is pre-configured for the FilmBox ecosystem.
+releaseNotes: >-
+  Initial release for FilmBox community store.
+developer: Viren070
+website: https://github.com/viren070/AIOStreams
+dependencies: []
+repo: https://github.com/viren070/AIOStreams
+support: https://github.com/viren070/AIOStreams/issues
+port: 3000
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: FilmBox
+submission: https://getfilmbox.com
