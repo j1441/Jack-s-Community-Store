@@ -1,19 +1,12 @@
-version: "3.7"
-
 services:
+  # NOTE: Umbrel legacy-compat can be finicky with bind-mounting local files.
+  # Keep this compose minimal to ensure installs succeed.
   app_proxy:
     environment:
-      APP_HOST: jacks-aiostreams-umbrel_landing_1
-      APP_PORT: 80
+      APP_HOST: jacks-aiostreams-umbrel_aiostreams_1
+      APP_PORT: 3000
 
-  # Landing page shown inside Umbrel UI
-  landing:
-    image: nginx:alpine
-    restart: on-failure
-    volumes:
-      - ./landing:/usr/share/nginx/html:ro
-
-  # AIOStreams itself (served on a dedicated host port to avoid Umbrel /app/<id>/ prefix issues)
+  # AIOStreams (also exposed on a dedicated host port so FilmBox VPS can reach it over Tailscale)
   aiostreams:
     image: viren070/aiostreams:latest
     restart: on-failure
@@ -22,12 +15,6 @@ services:
       - "3010:3000"
     environment:
       - SECRET_KEY=${APP_SEED}
-
-      # This should ultimately be the PUBLIC URL (VPS) that end-users use.
-      # The VPS will proxy to Umbrel:3010 over Tailscale.
       - BASE_URL=https://addon.getfilmbox.com
-
       - ADDON_URLS=https://torrentio.strem.fun/manifest.json
-
-      # Auth format required by AIOStreams
       - AIOSTREAMS_AUTH=admin:${APP_PASSWORD}
