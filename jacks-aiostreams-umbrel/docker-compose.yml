@@ -3,20 +3,32 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: aiostreams_web_1
+      # <app-id>_<web-container-name>_1
+      # Note: the _1 suffix is required by Umbrel
+      APP_HOST: jacks-aiostreams-umbrel_web_1
       APP_PORT: 3000
 
   web:
     image: viren070/aiostreams:latest
     restart: on-failure
     stop_grace_period: 1m
+    ports:
+      # Expose port for Tailscale/VPS-to-Umbrel access (FilmBox server fetching manifest over Tailnet)
+      - "3000:3000"
     environment:
-      # Use Tailscale IP or 'aiostreams' if accessing via internal docker network
-      # Since getfilmbox connects via Tailscale to Umbrel, this HOST should likely be the
-      # Tailscale IP of the Umbrel device (e.g. http://100.x.y.z:3000)
-      # For now, we default to the container port, but you must set this env var in the app
-      # settings or exports if needed.
-      - HOST=http://aiostreams:3000
+      # Required by AIOStreams
+      # Use Umbrel-provided APP_SEED (64 hex chars) as the encryption key
+      - SECRET_KEY=${APP_SEED}
+
+      # Base URL must be reachable by clients that will consume the manifest.
+      # For LAN users this will typically be http://umbrel.local:3000
+      # For FilmBox server via Tailscale, use the Umbrel device's Tailscale IP.
+      # Set this in Umbrel app settings if you want something else.
+      - BASE_URL=http://${DEVICE_DOMAIN_NAME}:3000
+
+      # Optional: configure which addons AIOStreams aggregates
       - ADDON_URLS=https://torrentio.strem.fun/manifest.json
-      # Default password - user should change this
-      - AIOSTREAMS_AUTH=filmbox_default_secret
+
+      # Auth: must be a comma-separated list of username:password pairs
+      # Umbrel provides APP_PASSWORD; we set user 'admin' by default.
+      - AIOSTREAMS_AUTH=admin:${APP_PASSWORD}
