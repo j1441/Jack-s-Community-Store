@@ -11,7 +11,7 @@ services:
     image: nginx:alpine
     restart: on-failure
     volumes:
-      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./landing:/usr/share/nginx/html:ro
 
   # AIOStreams itself (served on a dedicated host port to avoid Umbrel /app/<id>/ prefix issues)
   aiostreams:
