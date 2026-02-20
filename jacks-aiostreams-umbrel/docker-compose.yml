@@ -12,9 +12,6 @@ services:
     image: viren070/aiostreams:latest
     restart: on-failure
     stop_grace_period: 1m
-    ports:
-      # Expose port for Tailscale/VPS-to-Umbrel access (FilmBox server fetching manifest over Tailnet)
-      - "3000:3000"
     environment:
       # Required by AIOStreams
       # Use Umbrel-provided APP_SEED (64 hex chars) as the encryption key
@@ -24,7 +21,8 @@ services:
       # For LAN users this will typically be http://umbrel.local:3000
       # For FilmBox server via Tailscale, use the Umbrel device's Tailscale IP.
       # Set this in Umbrel app settings if you want something else.
-      - BASE_URL=http://${DEVICE_DOMAIN_NAME}:3000
+      # Umbrel serves apps at /app/<app-id>/ behind its reverse proxy
+      - BASE_URL=http://${DEVICE_DOMAIN_NAME}/app/jacks-aiostreams-umbrel
 
       # Optional: configure which addons AIOStreams aggregates
       - ADDON_URLS=https://torrentio.strem.fun/manifest.json
