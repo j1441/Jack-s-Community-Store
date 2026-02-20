@@ -2,7 +2,7 @@ manifestVersion: 1
 id: jacks-aiostreams-umbrel
 category: media
 name: Jack's AIOStreams
-version: "1.0.9"
+version: "1.1.0"
 tagline: All-in-one Stremio addon aggregator
 icon: http://192.168.1.243:8085/j1212/Jack-s-Community-Store/raw/branch/master/jacks-aiostreams-umbrel/icon.svg
 description: >-
@@ -17,7 +17,7 @@ website: https://github.com/viren070/AIOStreams
 dependencies: []
 repo: https://github.com/viren070/AIOStreams
 support: https://github.com/viren070/AIOStreams/issues
-port: 3000
+port: 80
 gallery: []
 path: ""
 defaultUsername: ""
