@@ -6,7 +6,7 @@ services:
 
   # AIOStreams (also exposed on a dedicated host port so FilmBox VPS can reach it over Tailscale)
   aiostreams:
-    image: viren070/aiostreams:latest
+    image: viren070/aiostreams@sha256:40ae879491ad20f097e0c7f20fa1d9d0619eff00682f59ccef722e2e7479e344
     restart: on-failure
     stop_grace_period: 1m
     ports:
@@ -16,3 +16,5 @@ services:
       - BASE_URL=https://getfilmbox.com/addon-proxy
       - ADDON_URLS=https://torrentio.strem.fun/manifest.json
       - AIOSTREAMS_AUTH=admin:${APP_PASSWORD}
+    volumes:
+      - ${APP_DATA_DIR}/data/aiostreams:/app/data
