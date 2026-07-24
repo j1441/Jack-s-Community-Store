@@ -7,7 +7,7 @@ services:
       APP_PORT: 3456
 
   web:
-    image: j73642/mining-dashboard-app:2.2.0@sha256:d585e7c3d7b8a845c62eb7c516d929cc517b1f71de659da0296b7b931eecdc87
+    image: j73642/mining-dashboard-app:2.2.1@sha256:d424e29ceda8d1ab2b4f8f91af9ba758c14e22cce013cbcacd6c5fa529ffdcdb
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 1m
