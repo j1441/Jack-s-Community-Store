@@ -1,0 +1,117 @@
+version: "3.7"
+
+# Ported from block/buzz deploy/compose/compose.yml for umbrelOS.
+# Internal service passwords are hardcoded (official Umbrel app convention —
+# postgres/redis/minio are only reachable on this app's private network).
+# Secrets that must be stable AND private (relay signing key, git-hook HMAC)
+# derive from ${APP_SEED}, Umbrel's deterministic per-install secret.
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: jacks-buzz-relay_relay_1
+      APP_PORT: 3000
+
+  relay:
+    image: ghcr.io/block/buzz:main
+    restart: on-failure
+    stop_grace_period: 1m
+    environment:
+      BUZZ_BIND_ADDR: 0.0.0.0:3000
+      BUZZ_HEALTH_PORT: "8080"
+      BUZZ_METRICS_PORT: "9102"
+      DATABASE_URL: postgres://buzz:moneyprintergobrrr@postgres:5432/buzz
+      REDIS_URL: redis://:moneyprintergobrrr@redis:6379
+      BUZZ_S3_ENDPOINT: http://minio:9000
+      BUZZ_S3_ACCESS_KEY: buzz-minio
+      BUZZ_S3_SECRET_KEY: moneyprintergobrrr
+      BUZZ_S3_BUCKET: buzz-media
+      BUZZ_GIT_REPO_PATH: /data/git
+      BUZZ_AUTO_MIGRATE: "true"
+      BUZZ_GIT_CONFORMANCE_PROBE: "true"
+      BUZZ_RELAY_PRIVATE_KEY: ${APP_SEED}
+      BUZZ_GIT_HOOK_HMAC_SECRET: ${APP_SEED}-git-hook
+      RELAY_URL: ws://${DEVICE_DOMAIN_NAME}:8482
+      BUZZ_MEDIA_BASE_URL: http://${DEVICE_DOMAIN_NAME}:8482/media
+      RUST_LOG: buzz_relay=info,buzz_db=info,buzz_auth=info,buzz_pubsub=info,tower_http=info
+    volumes:
+      - ${APP_DATA_DIR}/data/git:/data/git
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    # Probe /_readiness over /dev/tcp because the runtime image has bash but no curl/wget/socat.
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /_readiness HTTP/1.1\\r\\nHost: 127.0.0.1\\r\\nConnection: close\\r\\n\\r\\n\" >&3; grep -q \"200 OK\" <&3'",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+
+  postgres:
+    image: postgres:17-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_DB: buzz
+      POSTGRES_USER: buzz
+      POSTGRES_PASSWORD: moneyprintergobrrr
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buzz -d buzz"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    restart: on-failure
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "moneyprintergobrrr"]
+    volumes:
+      - ${APP_DATA_DIR}/data/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a moneyprintergobrrr ping | grep -q PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    restart: on-failure
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: buzz-minio
+      MINIO_ROOT_PASSWORD: moneyprintergobrrr
+    volumes:
+      - ${APP_DATA_DIR}/data/minio:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  minio-init:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -euc '
+        mc alias set local http://minio:9000 buzz-minio moneyprintergobrrr
+        mc mb --ignore-existing local/buzz-media
+        mc anonymous set none local/buzz-media
+      '
+    restart: "no"

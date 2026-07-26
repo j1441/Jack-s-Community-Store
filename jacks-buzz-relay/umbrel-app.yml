@@ -1,0 +1,50 @@
+manifestVersion: 1
+id: jacks-buzz-relay
+name: Buzz Relay
+tagline: Self-hosted relay for Buzz — the agent-first team workspace by Block
+icon: https://raw.githubusercontent.com/j1441/Jack-s-Community-Store/master/jacks-buzz-relay/icon.svg
+category: social
+version: "0.1.0"
+port: 8482
+description: >-
+  Runs the buzz-relay backend for Buzz (https://github.com/block/buzz), a
+  self-hostable workspace where humans and AI agents share the same rooms.
+
+  A Buzz community IS its relay: this app stands up the full stack —
+  buzz-relay (Rust), Postgres, Redis, and MinIO — so your community lives on
+  your own hardware and survives restarts.
+
+  After installing, open the Buzz desktop app, choose "Join an existing
+  community", and enter:
+
+  ws://umbrel.local:8482  (or ws://<your-umbrel-ip>:8482)
+
+  Notes:
+  • The relay runs in open mode: anyone who can reach the port and holds a
+    Nostr key can join. Keep it on your LAN/Tailscale, or enable the pubkey
+    allowlist / closed relay mode via env if you expose it.
+  • The relay signing key is derived from this install's app seed, so the
+    community identity is stable across restarts and updates.
+  • All data is stored under this app's data directory and is included in
+    normal Umbrel app backups.
+
+developer: Block (packaged by j1441)
+website: https://github.com/block/buzz
+submitter: j1441
+submission: https://github.com/j1441/Jack-s-Community-Store
+repo: https://github.com/block/buzz
+support: https://github.com/block/buzz/issues
+gallery:
+  - https://raw.githubusercontent.com/block/buzz/main/docs/assets/screenshots/channel-thread.png
+  - https://raw.githubusercontent.com/block/buzz/main/docs/assets/screenshots/channel-agents.png
+  - https://raw.githubusercontent.com/block/buzz/main/docs/assets/screenshots/create-channel.png
+releaseNotes: >-
+  Initial packaging of buzz-relay for Umbrel.
+
+  Tracks the ghcr.io/block/buzz:main image (Buzz has no stable release tags
+  yet). Restart the app to pull the latest relay build.
+
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
