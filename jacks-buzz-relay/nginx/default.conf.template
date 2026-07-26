@@ -1,0 +1,30 @@
+# Gateway in front of buzz-relay.
+# Canonical-host traffic (e.g. via Tailscale Serve) proxies straight through,
+# WebSockets included. Any other Host — like the Umbrel dashboard icon's
+# http://<device>:8482 — redirects to the canonical public URL.
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    if ($host != "${BUZZ_CANONICAL_HOST}") {
+        return 302 ${BUZZ_PUBLIC_URL}$request_uri;
+    }
+
+    location / {
+        proxy_pass http://${BUZZ_RELAY_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 24h;
+        proxy_send_timeout 24h;
+        client_max_body_size 512m;
+    }
+}

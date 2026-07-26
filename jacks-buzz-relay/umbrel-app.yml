@@ -4,7 +4,7 @@ name: Buzz Relay
 tagline: Self-hosted relay for Buzz — the agent-first team workspace by Block
 icon: https://raw.githubusercontent.com/j1441/Jack-s-Community-Store/master/jacks-buzz-relay/icon.svg
 category: social
-version: "0.1.5"
+version: "0.1.6"
 port: 8482
 description: >-
   Runs the buzz-relay backend for Buzz (https://github.com/block/buzz), a

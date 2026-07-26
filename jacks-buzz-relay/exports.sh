@@ -14,3 +14,13 @@ _buzz_user_env="${UMBREL_ROOT:-/home/umbrel/umbrel}/app-data/jacks-buzz-relay/us
 [ -f "${_buzz_user_env}" ] && . "${_buzz_user_env}"
 export APP_JACKS_BUZZ_RELAY_URL="${APP_JACKS_BUZZ_RELAY_URL:-ws://${DEVICE_DOMAIN_NAME:-umbrel.local}:8482}"
 export APP_JACKS_BUZZ_RELAY_MEDIA_URL="${APP_JACKS_BUZZ_RELAY_MEDIA_URL:-http://${DEVICE_DOMAIN_NAME:-umbrel.local}:8482/media}"
+
+# Gateway derivations: canonical host (no scheme/path) and the public
+# browser-facing URL, used by the nginx gateway for host-based redirects.
+export APP_JACKS_BUZZ_RELAY_GATEWAY_IP="10.21.61.6"
+_buzz_canonical_host="$(printf %s "${APP_JACKS_BUZZ_RELAY_URL}" | sed -e 's|^wss://||' -e 's|^ws://||' -e 's|/.*$||')"
+export APP_JACKS_BUZZ_RELAY_CANONICAL_HOST="${_buzz_canonical_host}"
+case "${APP_JACKS_BUZZ_RELAY_URL}" in
+  wss://*) export APP_JACKS_BUZZ_RELAY_PUBLIC_URL="https://${_buzz_canonical_host}" ;;
+  *)       export APP_JACKS_BUZZ_RELAY_PUBLIC_URL="http://${_buzz_canonical_host}" ;;
+esac
