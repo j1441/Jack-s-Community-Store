@@ -4,7 +4,7 @@ name: Mining Dashboard
 tagline: Profit + heat autopilot for your Antminer home heater
 icon: https://raw.githubusercontent.com/j1441/jacks-mining-dashboard-app/e1424543a5b83fba6620658e73e4f9ec62459c03/icon.svg
 category: automation
-version: "2.3.3"
+version: "2.4.0"
 port: 3456
 description: >-
   Real-time dashboard and autopilot for Antminers running Braiins OS. Perfect for home heating miners.
@@ -29,14 +29,12 @@ gallery:
   - https://i.imgur.com/yyVG0Jb.jpeg
   - https://i.imgur.com/yyVG0Jb.jpeg
 releaseNotes: >-
-  v2.2.0 — heating zones.
+  v2.4.0 — comfort ceiling for profit mining.
 
-  • Assign each miner to an area (upstairs, garage, …); every zone gets its own
-  thermostat, demand source and alternative-heat setting
-  • Zone room temperature = coolest fresh reading across that zone's miners
-  • "No other heat source" zones treat demand as a hard requirement — miners run
-  to make the heat even when mining alone loses money
-  • Fix: a stale Braiins tuner state could deadlock auto control while paused
+  • New per-zone "max room temp": when mining is profitable the miner runs as
+  hard as the economics allow, but pauses when the zone's room temperature
+  reaches the limit and resumes once it cools (0.5° hysteresis)
+  • Heat-demand heating still stops at the thermostat target as before
 
 dependencies: []
 path: ""
