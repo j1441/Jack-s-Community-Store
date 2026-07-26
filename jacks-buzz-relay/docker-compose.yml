@@ -9,7 +9,7 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: jacks-buzz-relay_relay_1
+      APP_HOST: ${APP_JACKS_BUZZ_RELAY_IP}
       APP_PORT: 3000
       # No Umbrel login wall: the Buzz desktop app must reach the relay
       # (WebSocket + REST) directly, same as the official nostr-relay app.
@@ -32,9 +32,9 @@ services:
       BUZZ_BIND_ADDR: 0.0.0.0:3000
       BUZZ_HEALTH_PORT: "8080"
       BUZZ_METRICS_PORT: "9102"
-      DATABASE_URL: postgres://buzz:moneyprintergobrrr@jacks-buzz-relay_postgres_1:5432/buzz
-      REDIS_URL: redis://:moneyprintergobrrr@jacks-buzz-relay_redis_1:6379
-      BUZZ_S3_ENDPOINT: http://jacks-buzz-relay_minio_1:9000
+      DATABASE_URL: postgres://buzz:moneyprintergobrrr@${APP_JACKS_BUZZ_RELAY_POSTGRES_IP}:5432/buzz
+      REDIS_URL: redis://:moneyprintergobrrr@${APP_JACKS_BUZZ_RELAY_REDIS_IP}:6379
+      BUZZ_S3_ENDPOINT: http://${APP_JACKS_BUZZ_RELAY_MINIO_IP}:9000
       BUZZ_S3_ACCESS_KEY: buzz-minio
       BUZZ_S3_SECRET_KEY: moneyprintergobrrr
       BUZZ_S3_BUCKET: buzz-media
@@ -48,6 +48,9 @@ services:
       RUST_LOG: buzz_relay=info,buzz_db=info,buzz_auth=info,buzz_pubsub=info,tower_http=info
     volumes:
       - ${APP_DATA_DIR}/data/git:/data/git
+    networks:
+      default:
+        ipv4_address: ${APP_JACKS_BUZZ_RELAY_IP}
     depends_on:
       git-dir-init:
         condition: service_completed_successfully
@@ -81,6 +84,9 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data
+    networks:
+      default:
+        ipv4_address: ${APP_JACKS_BUZZ_RELAY_POSTGRES_IP}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U buzz -d buzz"]
       interval: 5s
@@ -94,6 +100,9 @@ services:
     command: ["redis-server", "--appendonly", "yes", "--requirepass", "moneyprintergobrrr"]
     volumes:
       - ${APP_DATA_DIR}/data/redis:/data
+    networks:
+      default:
+        ipv4_address: ${APP_JACKS_BUZZ_RELAY_REDIS_IP}
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a moneyprintergobrrr ping | grep -q PONG"]
       interval: 5s
@@ -110,6 +119,9 @@ services:
       MINIO_ROOT_PASSWORD: moneyprintergobrrr
     volumes:
       - ${APP_DATA_DIR}/data/minio:/data
+    networks:
+      default:
+        ipv4_address: ${APP_JACKS_BUZZ_RELAY_MINIO_IP}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
       interval: 5s
@@ -124,7 +136,7 @@ services:
         condition: service_healthy
     entrypoint: >
       /bin/sh -euc '
-        mc alias set local http://jacks-buzz-relay_minio_1:9000 buzz-minio moneyprintergobrrr
+        mc alias set local http://${APP_JACKS_BUZZ_RELAY_MINIO_IP}:9000 buzz-minio moneyprintergobrrr
         mc mb --ignore-existing local/buzz-media
         mc anonymous set none local/buzz-media
       '
