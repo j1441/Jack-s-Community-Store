@@ -11,6 +11,18 @@ services:
     environment:
       APP_HOST: jacks-buzz-relay_relay_1
       APP_PORT: 3000
+      # No Umbrel login wall: the Buzz desktop app must reach the relay
+      # (WebSocket + REST) directly, same as the official nostr-relay app.
+      PROXY_AUTH_ADD: "false"
+
+  # Umbrel creates bind-mount dirs as root; the buzz image runs as uid 1000
+  # and needs to write /data/git. Chown once before the relay starts.
+  git-dir-init:
+    image: busybox:1.36
+    command: ["chown", "-R", "1000:1000", "/data/git"]
+    volumes:
+      - ${APP_DATA_DIR}/data/git:/data/git
+    restart: "no"
 
   relay:
     image: ghcr.io/block/buzz:main
@@ -37,6 +49,8 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/git:/data/git
     depends_on:
+      git-dir-init:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:
