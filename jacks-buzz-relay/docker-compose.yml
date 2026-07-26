@@ -40,6 +40,7 @@ services:
       BUZZ_S3_BUCKET: buzz-media
       BUZZ_GIT_REPO_PATH: /data/git
       BUZZ_AUTO_MIGRATE: "true"
+      BUZZ_SERVE_GIT_WEB_GUI: "true"
       BUZZ_GIT_CONFORMANCE_PROBE: "true"
       BUZZ_RELAY_PRIVATE_KEY: ${APP_SEED}
       BUZZ_GIT_HOOK_HMAC_SECRET: ${APP_SEED}-git-hook
