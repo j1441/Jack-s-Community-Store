@@ -6,6 +6,7 @@ export APP_JACKS_BUZZ_RELAY_IP="10.21.61.2"
 export APP_JACKS_BUZZ_RELAY_POSTGRES_IP="10.21.61.3"
 export APP_JACKS_BUZZ_RELAY_REDIS_IP="10.21.61.4"
 export APP_JACKS_BUZZ_RELAY_MINIO_IP="10.21.61.5"
+export APP_JACKS_BUZZ_RELAY_BACKUP_IP="10.21.61.7"
 
 # Relay URL override: drop a user.env next to the app's data dir to pin the
 # community host (e.g. a Tailscale MagicDNS name). The relay binds its
@@ -24,3 +25,22 @@ case "${APP_JACKS_BUZZ_RELAY_URL}" in
   wss://*) export APP_JACKS_BUZZ_RELAY_PUBLIC_URL="https://${_buzz_canonical_host}" ;;
   *)       export APP_JACKS_BUZZ_RELAY_PUBLIC_URL="http://${_buzz_canonical_host}" ;;
 esac
+
+# Admin dashboard, published on its own host port so the relay port keeps its
+# unauthenticated WebSocket surface for the desktop app.
+export APP_JACKS_BUZZ_RELAY_ADMIN_PORT="${BUZZ_ADMIN_PORT:-8484}"
+
+# The relay gates its admin routes on an exact Host match and answers 404 for a
+# community on that same authority, so the admin name must differ from the
+# community's. This is an internal name the gateway sets on the proxied request;
+# it never has to resolve anywhere. Browsers reach the dashboard on whatever
+# name the box answers to, which is why it is not pinned to DEVICE_DOMAIN_NAME
+# the way the community URL is.
+export APP_JACKS_BUZZ_RELAY_ADMIN_HOST="${BUZZ_ADMIN_HOST:-buzz-admin.internal}"
+
+# Basic-auth password for the admin port. APP_PASSWORD is Umbrel's deterministic
+# per-app secret (HMAC of the box seed), so it is stable across restarts and
+# updates without being stored anywhere. Override in user.env to pick your own.
+# The gateway also writes the value it used to
+# app-data/jacks-buzz-relay/data/admin/credentials.txt.
+export APP_JACKS_BUZZ_RELAY_ADMIN_PASSWORD="${BUZZ_ADMIN_PASSWORD:-${APP_PASSWORD}}"
