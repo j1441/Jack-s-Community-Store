@@ -38,9 +38,11 @@ export APP_JACKS_BUZZ_RELAY_ADMIN_PORT="${BUZZ_ADMIN_PORT:-8484}"
 # the way the community URL is.
 export APP_JACKS_BUZZ_RELAY_ADMIN_HOST="${BUZZ_ADMIN_HOST:-buzz-admin.internal}"
 
-# Basic-auth password for the admin port. APP_PASSWORD is Umbrel's deterministic
-# per-app secret (HMAC of the box seed), so it is stable across restarts and
-# updates without being stored anywhere. Override in user.env to pick your own.
-# The gateway also writes the value it used to
+# Basic-auth password override for the admin port; set BUZZ_ADMIN_PASSWORD in
+# user.env to pick your own. When empty, the gateway falls back to Umbrel's
+# deterministic per-app password (APP_PASSWORD, an HMAC of the box seed) — that
+# fallback lives in docker-compose.yml, NOT here: umbreld sources this file
+# under `set -u` BEFORE it exports APP_PASSWORD, so referencing it here aborts
+# every install and update. The gateway writes the value it used to
 # app-data/jacks-buzz-relay/data/admin/credentials.txt.
-export APP_JACKS_BUZZ_RELAY_ADMIN_PASSWORD="${BUZZ_ADMIN_PASSWORD:-${APP_PASSWORD}}"
+export APP_JACKS_BUZZ_RELAY_ADMIN_PASSWORD="${BUZZ_ADMIN_PASSWORD:-}"
